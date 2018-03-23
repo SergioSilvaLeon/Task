@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ssilva.task.Activity.BookDetailActivity">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <com.master.glideimageview.GlideImageView
+            android:id="@+id/imageViewBookCover"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:error_res="@color/colorPrimaryDark"
+            app:placeholder_res="@mipmap/ic_launcher"
+            app:show_progress="true"/>
+
+        <TextView
+            android:id="@+id/tvPublishedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_weight="1"
+            android:gravity="bottom|right"
+            android:text="TextView"/>
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tvAuthors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"/>
+</LinearLayout>
