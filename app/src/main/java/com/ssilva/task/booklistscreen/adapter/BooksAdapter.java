@@ -1,7 +1,6 @@
 package com.ssilva.task.booklistscreen.adapter;
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +9,7 @@ import android.widget.TextView;
 
 import com.master.glideimageview.GlideImageView;
 import com.ssilva.task.R;
-import com.ssilva.task.bookdetailscreen.BookDetailActivity;
-import com.ssilva.task.booklistscreen.BookListActivity;
+import com.ssilva.task.booklistscreen.ItemSelectedListener;
 import com.ssilva.task.model.Book;
 
 import java.util.List;
@@ -20,11 +18,11 @@ import java.util.List;
 public class BooksAdapter  extends RecyclerView.Adapter<BooksAdapter.BookViewAdapter>{
 
     private List<Book> mBooks;
-    private Context mContext;
+    private ItemSelectedListener mItemSelectedListener;
 
-    public BooksAdapter(List<Book> books, Context context){
+    public BooksAdapter(List<Book> books, ItemSelectedListener itemSelectedListener){
         mBooks = books;
-        mContext = context;
+        mItemSelectedListener = itemSelectedListener;
     }
 
     @Override
@@ -70,10 +68,7 @@ public class BooksAdapter  extends RecyclerView.Adapter<BooksAdapter.BookViewAda
 
         @Override
         public void onClick(View v) {
-
-            Intent intent = new Intent(mContext, BookDetailActivity.class);
-            intent.putExtra(BookListActivity.EXTRA_BOOK_ID, mBooks.get(getAdapterPosition()).getId());
-            mContext.startActivity(intent);
+            mItemSelectedListener.onItemSelected(mBooks.get(getAdapterPosition()).getId());
         }
     }
 }

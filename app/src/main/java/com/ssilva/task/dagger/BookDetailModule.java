@@ -9,7 +9,7 @@ import dagger.Provides;
 
 @Module
 public class BookDetailModule {
-   @Provides
+    @Provides
     BookDetailViewPresenterContract.Presenter provideBookDetailPresenter(IDataRepository dataRepository) {
        return new BookDetailPresenter(dataRepository);
    }

@@ -1,65 +1,92 @@
 package com.ssilva.task.booklistscreen;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ssilva.task.R;
+import com.ssilva.task.TaskApp;
+import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
 import com.ssilva.task.model.BookList;
-import com.ssilva.task.network.ApiClient;
-import com.ssilva.task.network.BooksApi;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import javax.inject.Inject;
 
-public class BookListActivity extends AppCompatActivity {
+public class BookListActivity extends AppCompatActivity
+        implements BookListViewPresenterContract.View, ItemSelectedListener {
 
+    private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private BooksAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private static final String TAG = BookListActivity.class.getSimpleName();
     public static final String EXTRA_BOOK_ID = "EXTRA_BOOK_ID";
+
+    @Inject
+    BookListViewPresenterContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+        mProgressBar = findViewById(R.id.progress_bar);
+        mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        goDagger();
 
-        BooksApi apiService =
-                ApiClient.retrofit().create(BooksApi.class);
+    }
 
-        Call<BookList> call = apiService.getBookList();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.setView(this);
+        presenter.loadListOfBooks();
+    }
 
-        call.enqueue(new Callback<BookList>() {
-            @Override
-            public void onResponse(Call<BookList> call, Response<BookList> response) {
-                BookList bookList = response.body();
-                // specify an adapter (see also next example)
-                mAdapter = new BooksAdapter(bookList.getBooks(), BookListActivity.this);
-                mRecyclerView.setAdapter(mAdapter);
-            }
+    private void goDagger() {
+        TaskApp.component.provideBookListComponent().inject(this);
+    }
 
-            @Override
-            public void onFailure(Call<BookList> call, Throwable t) {
-                Toast.makeText(BookListActivity.this, "Error, on Connection", Toast.LENGTH_SHORT).show();
-            }
-        });
+    @Override
+    public void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void dismissProgressBar() {
+        mProgressBar.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void onError(Throwable throwable) {
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSuccess(BookList listOfBooks) {
+        mAdapter = new BooksAdapter(listOfBooks.getBooks(), this);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onItemSelected(String id) {
+        Intent intent = new Intent(BookListActivity.this, BookDetailActivity.class);
+        intent.putExtra(BookListActivity.EXTRA_BOOK_ID, id);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unSubscribe();
+        presenter.dropView();
     }
 }

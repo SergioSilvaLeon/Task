@@ -11,5 +11,9 @@ import dagger.Component;
         DataModule.class
 })
 public interface AppComponent {
+
     BookDetailComponent provideBookDetailComponent();
+
+    BookListComponent provideBookListComponent();
+
 }
