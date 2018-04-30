@@ -19,6 +19,5 @@ public class TaskApp extends Application {
                 .appModule(new AppModule(this))
                 .build();
 
-
     }
 }

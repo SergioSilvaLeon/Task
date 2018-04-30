@@ -5,7 +5,6 @@ import com.ssilva.task.model.BookList;
 import com.ssilva.task.network.BooksApi;
 
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 
 
 public class DataRepositoryImpl implements IDataRepository{
@@ -18,12 +17,14 @@ public class DataRepositoryImpl implements IDataRepository{
 
     @Override
     public Single<BookList> getBooksFromApi() {
-        return null;
+        return api.getListOfBooks()
+                .map(response -> response.body())
+                .doOnError(error -> {throw new RuntimeException(error.getMessage());});
     }
 
     @Override
     public Single<Book> getBookById(String id) {
-        return api.getBook(id)
+        return api.getBookById(id)
                 .map(response -> response.body())
                 .doOnError(error -> {throw new RuntimeException(error.getMessage());});
     }

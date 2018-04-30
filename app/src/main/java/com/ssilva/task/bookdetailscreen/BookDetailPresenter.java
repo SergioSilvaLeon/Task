@@ -21,8 +21,7 @@ public class BookDetailPresenter extends RxBasePresenter implements BookDetailVi
 
         bookDetailView.showProgressBar();
 
-        Disposable disposable =
-        dataRepository.getBookById(bookDetailView.getTitleId())
+        Disposable disposable = dataRepository.getBookById(bookDetailView.getTitleId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
