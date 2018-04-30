@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.ssilva.task.R;
 import com.ssilva.task.model.BookList;
 import com.ssilva.task.network.ApiClient;
-import com.ssilva.task.network.ApiInterface;
+import com.ssilva.task.network.BooksApi;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ApiInterface apiService =
-                ApiClient.retrofit().create(ApiInterface.class);
+        BooksApi apiService =
+                ApiClient.retrofit().create(BooksApi.class);
 
         Call<BookList> call = apiService.getBookList();
 

@@ -7,52 +7,67 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.master.glideimageview.GlideImageView;
+import com.ssilva.task.TaskApp;
 import com.ssilva.task.booklist.MainActivity;
 import com.ssilva.task.R;
 import com.ssilva.task.model.Book;
-import com.ssilva.task.network.ApiClient;
-import com.ssilva.task.network.ApiInterface;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import javax.inject.Inject;
 
-public class BookDetailActivity extends AppCompatActivity {
+public class BookDetailActivity extends AppCompatActivity implements BookDetailPresenterContract.View{
+
+    private GlideImageView bookCover;
+    private TextView tvPublishedDate;
+    private TextView tvAuthors;
+    private TextView tvDescription;
+
+    // TODO: Inject Presenter
+    @Inject
+    BookDetailPresenterContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books_detail);
+        initViews();
+        injectDependencies();
+    }
 
-        final GlideImageView bookCover = findViewById(R.id.imageViewBookCover);
-        final TextView tvPublishedDate = findViewById(R.id.tvPublishedDate);
-        final TextView tvAuthors = findViewById(R.id.tvAuthors);
-        final TextView tvDescription = findViewById(R.id.tvDescription);
+    private void injectDependencies() {
+        TaskApp.component.provideBookDetailComponent().inject(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.setView(this);
+        presenter.getBookInfomation();
+    }
+
+    @Override
+    public void initViews() {
+        bookCover = findViewById(R.id.imageViewBookCover);
+        tvPublishedDate = findViewById(R.id.tvPublishedDate);
+        tvAuthors = findViewById(R.id.tvAuthors);
+        tvDescription = findViewById(R.id.tvDescription);
+    }
+
+    @Override
+    public String getTitleId() {
         Intent intent = getIntent();
-        String id = intent.getStringExtra(MainActivity.EXTRA_BOOK_ID);
+        return intent.getStringExtra(MainActivity.EXTRA_BOOK_ID);
+    }
 
-        ApiInterface apiService =
-                ApiClient.retrofit().create(ApiInterface.class);
+    @Override
+    public void onSuccess(Book book) {
+        bookCover.loadImageUrl(book.getVolumeInfo().getImageLinks().getLarge());
+        tvPublishedDate.setText(book.getVolumeInfo().getPublishedDate());
+        tvAuthors.setText(book.getVolumeInfo().getAuthors().toString());
+        tvDescription.setText(book.getVolumeInfo().getDescription());
+    }
 
-        Call<Book> call = apiService.getBook(id);
-
-        call.enqueue(new Callback<Book>() {
-            @Override
-                public void onResponse(Call<Book> call, Response<Book> response) {
-                Book book = response.body();
-                bookCover.loadImageUrl(book.getVolumeInfo().getImageLinks().getLarge());
-                tvPublishedDate.setText(book.getVolumeInfo().getPublishedDate());
-                tvAuthors.setText(book.getVolumeInfo().getAuthors().toString());
-                tvDescription.setText(book.getVolumeInfo().getDescription());
-            }
-
-            @Override
-            public void onFailure(Call<Book> call, Throwable t) {
-                Toast.makeText(BookDetailActivity.this, "Error, on Connection!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+    @Override
+    public void onError(Throwable throwable) {
+        Toast.makeText(this, "Error, on Connection!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -7,11 +7,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-/**
- * Created by sergiosilva on 3/22/18.
- */
-
-public interface ApiInterface {
+public interface BooksApi {
 
     @GET("/books/v1/volumes?q=android&startIndex=0&maxResults=10")
     Call<BookList> getBookList();
