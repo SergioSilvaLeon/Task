@@ -1,4 +1,4 @@
-package com.ssilva.task.booklist;
+package com.ssilva.task.booklistscreen.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.master.glideimageview.GlideImageView;
 import com.ssilva.task.R;
 import com.ssilva.task.bookdetailscreen.BookDetailActivity;
+import com.ssilva.task.booklistscreen.BookListActivity;
 import com.ssilva.task.model.Book;
 
 import java.util.List;
@@ -71,7 +72,7 @@ public class BooksAdapter  extends RecyclerView.Adapter<BooksAdapter.BookViewAda
         public void onClick(View v) {
 
             Intent intent = new Intent(mContext, BookDetailActivity.class);
-            intent.putExtra(MainActivity.EXTRA_BOOK_ID, mBooks.get(getAdapterPosition()).getId());
+            intent.putExtra(BookListActivity.EXTRA_BOOK_ID, mBooks.get(getAdapterPosition()).getId());
             mContext.startActivity(intent);
         }
     }

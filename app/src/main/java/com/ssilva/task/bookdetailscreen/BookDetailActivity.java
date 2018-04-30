@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.master.glideimageview.GlideImageView;
 import com.ssilva.task.TaskApp;
-import com.ssilva.task.booklist.MainActivity;
+import com.ssilva.task.booklistscreen.BookListActivity;
 import com.ssilva.task.R;
 import com.ssilva.task.model.Book;
 
@@ -59,7 +59,7 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailV
     @Override
     public String getTitleId() {
         Intent intent = getIntent();
-        return intent.getStringExtra(MainActivity.EXTRA_BOOK_ID);
+        return intent.getStringExtra(BookListActivity.EXTRA_BOOK_ID);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.ssilva.task.booklist;
+package com.ssilva.task.booklistscreen;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.ssilva.task.R;
+import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
 import com.ssilva.task.model.BookList;
 import com.ssilva.task.network.ApiClient;
 import com.ssilva.task.network.BooksApi;
@@ -15,13 +16,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class BookListActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private BooksAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = BookListActivity.class.getSimpleName();
     public static final String EXTRA_BOOK_ID = "EXTRA_BOOK_ID";
 
     @Override
@@ -49,13 +50,13 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<BookList> call, Response<BookList> response) {
                 BookList bookList = response.body();
                 // specify an adapter (see also next example)
-                mAdapter = new BooksAdapter(bookList.getBooks(), MainActivity.this);
+                mAdapter = new BooksAdapter(bookList.getBooks(), BookListActivity.this);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
             @Override
             public void onFailure(Call<BookList> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Error, on Connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BookListActivity.this, "Error, on Connection", Toast.LENGTH_SHORT).show();
             }
         });
 
