@@ -9,11 +9,13 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
 
+    // TODO: Get Base URL from Gradle
     private static final String NAMEBASEURL = "https://www.googleapis.com";
 
     @Provides
@@ -42,6 +44,7 @@ public class NetworkModule {
         return new Retrofit.Builder()
                 .baseUrl(NAME_BASE_URL)
                 .addConverterFactory(factory)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient.build())
                 .build();
     }

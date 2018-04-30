@@ -29,6 +29,7 @@ allprojects {
         gsonVersion = '2.8.2'
         okHttpInterceptorLibrariesVersion = '3.8.0'
         retrofitLibraryVersion = '2.3.0'
+        rxAndroidVersion = '2.0.2'
         rxJavaVersion = '2.0.8'
     }
 }

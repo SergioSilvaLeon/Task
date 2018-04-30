@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -43,11 +47,16 @@ dependencies {
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:$retrofitLibraryVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitLibraryVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitLibraryVersion"
 
     // Glide
     compile "com.master.android:glideimageview:$glideVersion"
 
-    //RxJava
+    // RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+
+    // Rx Android
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+
 
 }
