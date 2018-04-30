@@ -1,5 +1,6 @@
 package com.ssilva.task.dagger;
 
+import com.ssilva.task.BuildConfig;
 import com.ssilva.task.network.BooksApi;
 
 import javax.inject.Singleton;
@@ -15,13 +16,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetworkModule {
 
-    // TODO: Get Base URL from Gradle
-    private static final String NAMEBASEURL = "https://www.googleapis.com";
-
     @Provides
     @Singleton
     String provideNameBaseUrl() {
-        return NAMEBASEURL;
+        return BuildConfig.Host;
     }
 
     @Provides
