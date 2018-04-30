@@ -16,5 +16,5 @@ public interface BooksApi {
 
 
     @GET("/books/v1/volumes/{volumeId}")
-    Single<Response<Book>> getBook(@Path("volumeId") String id);
+    Single<Response<Book>> getBookById(@Path("volumeId") String id);
 }
