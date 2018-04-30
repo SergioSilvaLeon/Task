@@ -11,7 +11,6 @@ import dagger.Provides;
 
 @Module
 public class BookDetailModule {
-    @Singleton
     @Provides
     BookDetailViewPresenterContract.Presenter provideBookDetailPresenter(IDataRepository dataRepository) {
         return new BookDetailPresenter(dataRepository);
