@@ -25,8 +25,12 @@ allprojects {
 
         // App Dependencies
         daggerLibrariesVersion = '2.14.1'
+        glideVersion = '1.0'
+        gsonVersion = '2.8.2'
         okHttpInterceptorLibrariesVersion = '3.8.0'
-
+        retrofitLibraryVersion = '2.3.0'
+        rxAndroidVersion = '2.0.2'
+        rxJavaVersion = '2.0.8'
     }
 }
 
