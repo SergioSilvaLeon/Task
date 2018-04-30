@@ -26,25 +26,28 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    //Dagger2
+    // Dagger2
     implementation "com.google.dagger:dagger:$daggerLibrariesVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerLibrariesVersion"
     annotationProcessor "com.google.dagger:dagger-android-processor:$daggerLibrariesVersion"
 
-    //Okhttp
+    // Okhttp
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpInterceptorLibrariesVersion"
 
-
-    // recyclerview
+    // Recyclerview
     implementation 'com.android.support:recyclerview-v7:26.1.0'
 
-    // retrofit, gson
-    compile 'com.google.code.gson:gson:2.8.2'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    // Gson
+    compile "com.google.code.gson:gson:$gsonVersion"
 
-    compile 'com.master.android:glideimageview:1.0'
+    // Retrofit
+    compile "com.squareup.retrofit2:retrofit:$retrofitLibraryVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitLibraryVersion"
 
+    // Glide
+    compile "com.master.android:glideimageview:$glideVersion"
 
+    //RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
 }
