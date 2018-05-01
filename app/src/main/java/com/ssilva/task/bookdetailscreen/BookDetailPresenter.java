@@ -24,12 +24,9 @@ public class BookDetailPresenter extends RxBasePresenter implements BookDetailVi
         Disposable disposable = dataRepository.getBookById(bookDetailView.getTitleId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable1 -> bookDetailView.dismissProgressBar())
                 .subscribe(
-                        book -> {
-                            bookDetailView.onSuccess(book);
-                            // TODO: Move the command below -> doAfterTerminate
-                            bookDetailView.dismissProgressBar();
-                        },
+                        book -> bookDetailView.onSuccess(book),
                         error -> bookDetailView.onError(error));
 
         subscribe(disposable);
