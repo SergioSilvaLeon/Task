@@ -12,7 +12,7 @@ import com.master.glideimageview.GlideImageView;
 import com.ssilva.task.TaskApp;
 import com.ssilva.task.booklistscreen.BookListActivity;
 import com.ssilva.task.R;
-import com.ssilva.task.model.Book;
+import com.ssilva.task.data.models.Book;
 
 import javax.inject.Inject;
 

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.master.glideimageview.GlideImageView;
 import com.ssilva.task.R;
 import com.ssilva.task.booklistscreen.ItemSelectedListener;
-import com.ssilva.task.model.Book;
+import com.ssilva.task.data.models.Book;
 
 import java.util.List;
 

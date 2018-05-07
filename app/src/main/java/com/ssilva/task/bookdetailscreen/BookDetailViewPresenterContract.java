@@ -1,7 +1,7 @@
 package com.ssilva.task.bookdetailscreen;
 
 import com.ssilva.task.common.BaseViewPresenterContract;
-import com.ssilva.task.model.Book;
+import com.ssilva.task.data.models.Book;
 
 public interface BookDetailViewPresenterContract {
 

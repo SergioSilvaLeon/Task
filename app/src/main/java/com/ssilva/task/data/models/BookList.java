@@ -1,4 +1,4 @@
-package com.ssilva.task.model;
+package com.ssilva.task.data.models;
 
 
 import java.util.List;

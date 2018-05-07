@@ -1,7 +1,7 @@
 package com.ssilva.task.network;
 
-import com.ssilva.task.model.Book;
-import com.ssilva.task.model.BookList;
+import com.ssilva.task.data.models.Book;
+import com.ssilva.task.data.models.BookList;
 
 import io.reactivex.Single;
 import retrofit2.Response;

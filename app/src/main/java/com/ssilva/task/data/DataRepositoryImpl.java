@@ -1,7 +1,7 @@
 package com.ssilva.task.data;
 
-import com.ssilva.task.model.Book;
-import com.ssilva.task.model.BookList;
+import com.ssilva.task.data.models.Book;
+import com.ssilva.task.data.models.BookList;
 import com.ssilva.task.network.BooksApi;
 
 import io.reactivex.Single;

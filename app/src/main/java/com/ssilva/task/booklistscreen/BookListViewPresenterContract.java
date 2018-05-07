@@ -2,7 +2,7 @@ package com.ssilva.task.booklistscreen;
 
 
 import com.ssilva.task.common.BaseViewPresenterContract;
-import com.ssilva.task.model.BookList;
+import com.ssilva.task.data.models.BookList;
 
 public interface BookListViewPresenterContract {
 

@@ -1,5 +1,5 @@
 
-package com.ssilva.task.model;
+package com.ssilva.task.data.models;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
