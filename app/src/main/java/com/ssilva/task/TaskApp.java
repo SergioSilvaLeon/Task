@@ -3,7 +3,7 @@ package com.ssilva.task;
 import android.app.Application;
 
 import com.ssilva.task.dagger.AppComponent;
-import com.ssilva.task.dagger.AppModule;
+import com.ssilva.task.dagger.applicationScopeModules.AppModule;
 import com.ssilva.task.dagger.DaggerAppComponent;
 
 

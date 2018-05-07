@@ -1,4 +1,4 @@
-package com.ssilva.task.dagger;
+package com.ssilva.task.dagger.applicationScopeModules;
 
 import android.app.Application;
 import android.content.Context;

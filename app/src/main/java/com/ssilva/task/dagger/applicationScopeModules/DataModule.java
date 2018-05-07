@@ -1,4 +1,4 @@
-package com.ssilva.task.dagger;
+package com.ssilva.task.dagger.applicationScopeModules;
 
 import com.ssilva.task.data.DataRepositoryImpl;
 import com.ssilva.task.data.IDataRepository;

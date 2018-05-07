@@ -1,4 +1,4 @@
-package com.ssilva.task.dagger;
+package com.ssilva.task.booklistscreen.dagger;
 
 import com.ssilva.task.booklistscreen.BookListActivity;
 import com.ssilva.task.booklistscreen.dagger.BookListModule;
