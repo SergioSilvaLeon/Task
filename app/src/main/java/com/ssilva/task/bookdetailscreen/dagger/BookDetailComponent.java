@@ -1,4 +1,4 @@
-package com.ssilva.task.dagger;
+package com.ssilva.task.bookdetailscreen.dagger;
 
 import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.bookdetailscreen.dagger.BookDetailModule;

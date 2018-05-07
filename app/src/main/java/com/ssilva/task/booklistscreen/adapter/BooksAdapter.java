@@ -9,20 +9,23 @@ import android.widget.TextView;
 
 import com.master.glideimageview.GlideImageView;
 import com.ssilva.task.R;
-import com.ssilva.task.booklistscreen.ItemSelectedListener;
-import com.ssilva.task.data.models.Book;
+
+import com.ssilva.task.model.Book;
 
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 
 public class BooksAdapter  extends RecyclerView.Adapter<BooksAdapter.BookViewAdapter>{
 
-    private List<Book> mBooks;
-    private ItemSelectedListener mItemSelectedListener;
+    private static PublishSubject<String> clickSubject = PublishSubject.create();
 
-    public BooksAdapter(List<Book> books, ItemSelectedListener itemSelectedListener){
+    private List<Book> mBooks;
+
+    public BooksAdapter(List<Book> books){
         mBooks = books;
-        mItemSelectedListener = itemSelectedListener;
     }
 
     @Override
@@ -42,6 +45,10 @@ public class BooksAdapter  extends RecyclerView.Adapter<BooksAdapter.BookViewAda
     @Override
     public int getItemCount() {
         return mBooks.size();
+    }
+
+    public Observable<String> getClickListener () {
+        return clickSubject;
     }
 
     public class BookViewAdapter extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -72,7 +79,7 @@ public class BooksAdapter  extends RecyclerView.Adapter<BooksAdapter.BookViewAda
 
         @Override
         public void onClick(View v) {
-            mItemSelectedListener.onItemSelected(mBooks.get(getAdapterPosition()).getId());
+            clickSubject.onNext(mBooks.get(getAdapterPosition()).getId());
         }
     }
 }
