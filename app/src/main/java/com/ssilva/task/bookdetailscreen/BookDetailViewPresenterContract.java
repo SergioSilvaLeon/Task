@@ -7,8 +7,6 @@ public interface BookDetailViewPresenterContract {
 
     interface View extends BaseViewPresenterContract.View{
 
-        void initViews();
-
         String getTitleId();
 
         void onSuccess(Book book);

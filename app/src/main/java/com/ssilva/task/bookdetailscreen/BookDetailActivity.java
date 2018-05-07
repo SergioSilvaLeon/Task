@@ -16,15 +16,17 @@ import com.ssilva.task.data.models.Book;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class BookDetailActivity extends AppCompatActivity implements BookDetailViewPresenterContract.View{
 
-    private GlideImageView bookCover;
-    private TextView tvPublishedDate;
-    private TextView tvAuthors;
-    private TextView tvDescription;
-    private ProgressBar progressBar;
+    @BindView(R.id.imageViewBookCover)  GlideImageView bookCover;
+    @BindView(R.id.tvPublishedDate)  TextView tvPublishedDate;
+    @BindView(R.id.tvAuthors) TextView tvAuthors;
+    @BindView(R.id.tvDescription)  TextView tvDescription;
+    @BindView(R.id.progress_bar)  ProgressBar progressBar;
 
-    // TODO: Inject Presenter
     @Inject
     BookDetailViewPresenterContract.Presenter presenter;
 
@@ -32,7 +34,7 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books_detail);
-        initViews();
+        ButterKnife.bind(this);
         injectDependencies();
     }
 
@@ -47,14 +49,6 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailV
         presenter.getBookInformation();
     }
 
-    @Override
-    public void initViews() {
-        bookCover = findViewById(R.id.imageViewBookCover);
-        tvPublishedDate = findViewById(R.id.tvPublishedDate);
-        tvAuthors = findViewById(R.id.tvAuthors);
-        tvDescription = findViewById(R.id.tvDescription);
-        progressBar = findViewById(R.id.progress_bar);
-    }
 
     @Override
     public String getTitleId() {

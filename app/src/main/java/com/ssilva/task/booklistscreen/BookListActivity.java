@@ -20,16 +20,19 @@ import com.ssilva.task.data.models.BookList;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 
 public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View{
 
-    private ProgressBar mProgressBar;
-    private RecyclerView mRecyclerView;
     private BooksAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     public static final String EXTRA_BOOK_ID = "EXTRA_BOOK_ID";
+
+    @BindView(R.id.progress_bar) ProgressBar mProgressBar;
+    @BindView(R.id.my_recycler_view) RecyclerView mRecyclerView;
 
     @Inject
     BookListViewPresenterContract.Presenter presenter;
@@ -40,14 +43,15 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-        mProgressBar = findViewById(R.id.progress_bar);
+
+        ButterKnife.bind(this);
+        goDagger();
+
         mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        goDagger();
 
         // Demonstrate welcomeMessage was injected correctly
         Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();

@@ -59,6 +59,12 @@ dependencies {
     // Rx Android
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
 
+    // Autovalue
     annotationProcessor 'com.google.auto.value:auto-value:1.4'
     provided 'com.jakewharton.auto.value:auto-value-annotations:1.4'
+
+    // butterknife
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
 }
