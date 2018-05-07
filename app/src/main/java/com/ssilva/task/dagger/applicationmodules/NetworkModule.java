@@ -1,4 +1,4 @@
-package com.ssilva.task.dagger.applicationScopeModules;
+package com.ssilva.task.dagger.applicationmodules;
 
 import com.ssilva.task.BuildConfig;
 import com.ssilva.task.network.BooksApi;
