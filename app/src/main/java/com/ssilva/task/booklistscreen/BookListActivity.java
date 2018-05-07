@@ -13,6 +13,7 @@ import com.ssilva.task.R;
 import com.ssilva.task.TaskApp;
 import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
+
 import com.ssilva.task.booklistscreen.dagger.BookListModule;
 import com.ssilva.task.model.BookList;
 
