@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.master.glideimageview.GlideImageView;
 import com.ssilva.task.R;
+import com.ssilva.task.data.models.Book;
 
-import com.ssilva.task.model.Book;
 
 import java.util.List;
 

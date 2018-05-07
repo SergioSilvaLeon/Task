@@ -15,7 +15,7 @@ import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
 
 import com.ssilva.task.booklistscreen.dagger.BookListModule;
-import com.ssilva.task.model.BookList;
+import com.ssilva.task.data.models.BookList;
 
 import javax.inject.Inject;
 import javax.inject.Named;
