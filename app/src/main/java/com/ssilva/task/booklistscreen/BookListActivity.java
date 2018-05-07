@@ -17,8 +17,9 @@ import com.ssilva.task.model.BookList;
 
 import javax.inject.Inject;
 
-public class BookListActivity extends AppCompatActivity
-        implements BookListViewPresenterContract.View, ItemSelectedListener {
+import io.reactivex.disposables.Disposable;
+
+public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View{
 
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
@@ -33,8 +34,8 @@ public class BookListActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
         mProgressBar = findViewById(R.id.progress_bar);
         mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -72,15 +73,21 @@ public class BookListActivity extends AppCompatActivity
 
     @Override
     public void onSuccess(BookList listOfBooks) {
-        mAdapter = new BooksAdapter(listOfBooks.getBooks(), this);
+        mAdapter = new BooksAdapter(listOfBooks.getBooks());
         mRecyclerView.setAdapter(mAdapter);
+        setUpItemCicked();
+
     }
 
-    @Override
-    public void onItemSelected(String id) {
-        Intent intent = new Intent(BookListActivity.this, BookDetailActivity.class);
-        intent.putExtra(BookListActivity.EXTRA_BOOK_ID, id);
-        startActivity(intent);
+    private void setUpItemCicked () {
+        Disposable subscription = mAdapter.getClickListener()
+                .subscribe(id -> {
+                    Intent intent = new Intent(BookListActivity.this, BookDetailActivity.class);
+                    intent.putExtra(BookListActivity.EXTRA_BOOK_ID, id);
+                    startActivity(intent);
+                });
+
+        presenter.subscribe(subscription);
     }
 
     @Override
