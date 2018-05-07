@@ -13,9 +13,6 @@ public class VolumeInfo {
     @SerializedName("authors")
     @Expose
     private List<String> authors = null;
-    @SerializedName("publisher")
-    @Expose
-    private String publisher;
     @SerializedName("publishedDate")
     @Expose
     private String publishedDate;
@@ -41,14 +38,6 @@ public class VolumeInfo {
 
     public void setAuthors(List<String> authors) {
         this.authors = authors;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
     }
 
     public String getPublishedDate() {
