@@ -20,6 +20,6 @@ public interface AppComponent {
 
     BookDetailComponent provideBookDetailComponent();
 
-    BookListComponent provideBookListComponent();
+    BookListComponent.Builder provideBookListComponentBuilder();
 
 }

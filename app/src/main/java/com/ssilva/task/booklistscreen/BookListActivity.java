@@ -13,9 +13,11 @@ import com.ssilva.task.R;
 import com.ssilva.task.TaskApp;
 import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
+import com.ssilva.task.booklistscreen.dagger.BookListModule;
 import com.ssilva.task.model.BookList;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 public class BookListActivity extends AppCompatActivity
         implements BookListViewPresenterContract.View, ItemSelectedListener {
@@ -29,6 +31,9 @@ public class BookListActivity extends AppCompatActivity
 
     @Inject
     BookListViewPresenterContract.Presenter presenter;
+    @Named("welcomeMessage")
+    @Inject
+    String welcomeMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,9 @@ public class BookListActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(mLayoutManager);
         goDagger();
 
+        // Demonstrate welcomeMessage was injected correctly
+        Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -52,7 +60,11 @@ public class BookListActivity extends AppCompatActivity
     }
 
     private void goDagger() {
-        TaskApp.component.provideBookListComponent().inject(this);
+        TaskApp.component
+                .provideBookListComponentBuilder()
+                .bookDetailComponentBuilder(new BookListModule("Hello world!"))
+                .build()
+                .inject(this);
     }
 
     @Override
