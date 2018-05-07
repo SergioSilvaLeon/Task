@@ -6,17 +6,14 @@ import com.ssilva.task.network.BooksApi;
 
 import javax.inject.Singleton;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class DataModule {
+public abstract class DataModule {
 
-    @Provides
+    @Binds
     @Singleton
-    IDataRepository provideDataRepository(BooksApi api) {
-        return new DataRepositoryImpl(api);
-    }
-
-
+    abstract IDataRepository provideDataRepository(DataRepositoryImpl dataRepository);
 }
