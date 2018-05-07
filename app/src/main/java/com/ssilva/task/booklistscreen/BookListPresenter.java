@@ -24,7 +24,6 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
         Disposable disposable = dataRepository.getBooksFromApi()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable1 -> view.dismissProgressBar())
                 .subscribe(
                         bookList -> view.onSuccess(bookList),
                         error -> view.onError(error)

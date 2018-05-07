@@ -34,11 +34,12 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books_detail);
+        // Go to abstract activity class
         ButterKnife.bind(this);
-        injectDependencies();
+        doDagger();
     }
 
-    private void injectDependencies() {
+    private void doDagger() {
         TaskApp.component.provideBookDetailComponent().inject(this);
     }
 

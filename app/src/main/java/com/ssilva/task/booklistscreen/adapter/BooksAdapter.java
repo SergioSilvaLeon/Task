@@ -11,20 +11,21 @@ import com.master.glideimageview.GlideImageView;
 import com.ssilva.task.R;
 import com.ssilva.task.data.models.Book;
 
-
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 
-public class BooksAdapter  extends RecyclerView.Adapter<BooksAdapter.BookViewAdapter>{
+public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewAdapter> {
 
-    private static PublishSubject<String> clickSubject = PublishSubject.create();
+    // Not thread safe,
+    private Subject<String> clickSubject = PublishSubject.<String>create().toSerialized();
 
     private List<Book> mBooks;
 
-    public BooksAdapter(List<Book> books){
+    public BooksAdapter(List<Book> books) {
         mBooks = books;
     }
 
@@ -47,11 +48,11 @@ public class BooksAdapter  extends RecyclerView.Adapter<BooksAdapter.BookViewAda
         return mBooks.size();
     }
 
-    public Observable<String> getClickListener () {
+    public Observable<String> getClickListener() {
         return clickSubject;
     }
 
-    public class BookViewAdapter extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class BookViewAdapter extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView bookTitle;
         TextView bookProductionDate;
@@ -67,12 +68,12 @@ public class BooksAdapter  extends RecyclerView.Adapter<BooksAdapter.BookViewAda
             itemView.setOnClickListener(this);
         }
 
-        public void bindToView(Book book){
+        public void bindToView(Book book) {
             bookTitle.setText(book.getVolumeInfo().getTitle());
             bookProductionDate.setText(book.getVolumeInfo().getPublishedDate());
             try {
                 bookThumbnail.loadImageUrl(book.getVolumeInfo().getImageLinks().getSmallThumbnail());
-            } catch (Exception e){
+            } catch (Exception e) {
                 // TODO: Handle Exception
             }
         }

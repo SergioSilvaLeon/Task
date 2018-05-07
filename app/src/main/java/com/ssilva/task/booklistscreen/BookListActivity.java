@@ -1,8 +1,8 @@
 package com.ssilva.task.booklistscreen;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,7 +13,6 @@ import com.ssilva.task.R;
 import com.ssilva.task.TaskApp;
 import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
-
 import com.ssilva.task.booklistscreen.dagger.BookListModule;
 import com.ssilva.task.data.models.BookList;
 
@@ -24,21 +23,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 
-public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View{
-
-    private BooksAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View {
 
     public static final String EXTRA_BOOK_ID = "EXTRA_BOOK_ID";
-
-    @BindView(R.id.progress_bar) ProgressBar mProgressBar;
-    @BindView(R.id.my_recycler_view) RecyclerView mRecyclerView;
-
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.my_recycler_view)
+    RecyclerView mRecyclerView;
     @Inject
     BookListViewPresenterContract.Presenter presenter;
     @Named("welcomeMessage")
     @Inject
     String welcomeMessage;
+    private BooksAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,17 +84,22 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Override
     public void onError(Throwable throwable) {
         Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        // disable progress bar
+        dismissProgressBar();
     }
 
     @Override
     public void onSuccess(BookList listOfBooks) {
         mAdapter = new BooksAdapter(listOfBooks.getBooks());
         mRecyclerView.setAdapter(mAdapter);
-        setUpItemCicked();
+        setUpItemClicked();
+
+        // disable progress bar
+        dismissProgressBar();
 
     }
 
-    private void setUpItemCicked () {
+    private void setUpItemClicked() {
         Disposable subscription = mAdapter.getClickListener()
                 .subscribe(id -> {
                     Intent intent = new Intent(BookListActivity.this, BookDetailActivity.class);
