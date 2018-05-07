@@ -4,6 +4,8 @@ import com.ssilva.task.model.Book;
 import com.ssilva.task.model.BookList;
 import com.ssilva.task.network.BooksApi;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 
 
@@ -11,6 +13,7 @@ public class DataRepositoryImpl implements IDataRepository{
 
     private BooksApi api;
 
+    @Inject
     public DataRepositoryImpl(BooksApi api) {
         this.api = api;
     }

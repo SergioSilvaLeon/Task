@@ -3,7 +3,6 @@ package com.ssilva.task;
 import android.app.Application;
 
 import com.ssilva.task.dagger.AppComponent;
-import com.ssilva.task.dagger.AppModule;
 import com.ssilva.task.dagger.DaggerAppComponent;
 
 
@@ -16,7 +15,6 @@ public class TaskApp extends Application {
 
         component = DaggerAppComponent
                 .builder()
-                .appModule(new AppModule(this))
                 .build();
 
     }
