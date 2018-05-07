@@ -12,7 +12,6 @@ public interface BooksApi {
 
     String baseUrl = "/books/v1/volumes";
 
-
     @GET(baseUrl + "?q=android&startIndex=0&maxResults=10")
     Single<Response<BookList>> getListOfBooks();
 
