@@ -10,9 +10,12 @@ import retrofit2.http.Path;
 
 public interface BooksApi {
 
-    @GET("/books/v1/volumes?q=android&startIndex=0&maxResults=10")
+    String baseUrl = "/books/v1/volumes";
+
+
+    @GET(baseUrl + "?q=android&startIndex=0&maxResults=10")
     Single<Response<BookList>> getListOfBooks();
 
-    @GET("/books/v1/volumes/{volumeId}")
+    @GET(baseUrl + "/{volumeId}")
     Single<Response<Book>> getBookById(@Path("volumeId") String id);
 }
