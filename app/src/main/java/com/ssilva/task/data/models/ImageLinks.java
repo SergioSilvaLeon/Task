@@ -1,16 +1,13 @@
 
 package com.ssilva.task.data.models;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ImageLinks {
 
     @SerializedName("smallThumbnail")
-    @Expose
     private String smallThumbnail;
     @SerializedName("large")
-    @Expose
     private String large;
 
     public String getSmallThumbnail() {

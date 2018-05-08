@@ -8,19 +8,14 @@ import com.google.gson.annotations.SerializedName;
 public class VolumeInfo {
 
     @SerializedName("title")
-    @Expose
     private String title;
     @SerializedName("authors")
-    @Expose
     private List<String> authors = null;
     @SerializedName("publishedDate")
-    @Expose
     private String publishedDate;
     @SerializedName("description")
-    @Expose
     private String description;
     @SerializedName("imageLinks")
-    @Expose
     private ImageLinks imageLinks;
 
 
