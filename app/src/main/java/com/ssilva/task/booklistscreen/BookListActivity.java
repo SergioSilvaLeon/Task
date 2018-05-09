@@ -84,7 +84,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Override
     public void onError(Throwable throwable) {
         Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
-        // disable progress bar
+
         dismissProgressBar();
     }
 
@@ -94,7 +94,6 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         mRecyclerView.setAdapter(mAdapter);
         setUpItemClicked();
 
-        // disable progress bar
         dismissProgressBar();
 
     }
