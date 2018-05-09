@@ -60,7 +60,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     protected void onResume() {
         super.onResume();
         presenter.setView(this);
-        presenter.loadListOfBooks();
+        presenter.loadListOfBooks(0);
     }
 
     private void goDagger() {

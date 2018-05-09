@@ -18,10 +18,10 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
 
 
     @Override
-    public void loadListOfBooks() {
+    public void loadListOfBooks(int startIndex) {
         view.showProgressBar();
 
-        Disposable disposable = dataRepository.getBooksFromApi()
+        Disposable disposable = dataRepository.getBooksFromApi(startIndex)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
