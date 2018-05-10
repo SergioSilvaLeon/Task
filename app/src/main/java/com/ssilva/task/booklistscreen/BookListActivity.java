@@ -36,8 +36,12 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Named("welcomeMessage")
     @Inject
     String welcomeMessage;
+    @Inject
+    LinearLayoutManager linearLayoutManager;
+    @Inject
+    PaginationScrollingListener scrollListener;
+
     private BooksAdapter mAdapter;
-    private PaginationScrollingListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +52,10 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         goDagger();
 
         mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-
-        scrollListener = new PaginationScrollingListener(linearLayoutManager);
-
         mRecyclerView.addOnScrollListener(scrollListener);
 
         Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();
-
     }
 
     public void setUpIndexItem() {
@@ -77,7 +76,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     private void goDagger() {
         TaskApp.component
                 .provideBookListComponentBuilder()
-                .bookDetailComponentBuilder(new BookListModule("Hello world!"))
+                .bookDetailComponentBuilder(new BookListModule("Hello world!", this))
                 .build()
                 .inject(this);
     }
