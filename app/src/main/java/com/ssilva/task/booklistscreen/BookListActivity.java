@@ -63,6 +63,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
 
     @Override
     public void loadNextItems(int startIndex) {
+        showProgressBar();
         presenter.loadMoreListOfBooks(startIndex);
     }
 
