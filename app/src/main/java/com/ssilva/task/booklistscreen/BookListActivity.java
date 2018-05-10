@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -56,6 +57,12 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         mRecyclerView.addOnScrollListener(scroller);
 
         Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     public void setUpIndexItem() {
