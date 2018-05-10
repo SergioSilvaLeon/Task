@@ -5,7 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.ssilva.task.booklistscreen.BookListPresenter;
 import com.ssilva.task.booklistscreen.BookListViewPresenterContract;
-import com.ssilva.task.booklistscreen.adapter.PaginationScrollingListener;
+import com.ssilva.task.booklistscreen.adapter.PaginationScroll;
 import com.ssilva.task.dagger.scopes.ActivityViewScope;
 import com.ssilva.task.data.IDataRepository;
 
@@ -14,7 +14,6 @@ import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
-import io.reactivex.internal.observers.ConsumerSingleObserver;
 
 @Module
 public class BookListModule {
@@ -49,8 +48,8 @@ public class BookListModule {
 
     @ActivityViewScope
     @Provides
-    PaginationScrollingListener provideScrollListener(LinearLayoutManager linearLayoutManager) {
-        return new PaginationScrollingListener(linearLayoutManager);
+    PaginationScroll provideScrollListener(LinearLayoutManager linearLayoutManager) {
+        return new PaginationScroll(linearLayoutManager);
     }
 
 }

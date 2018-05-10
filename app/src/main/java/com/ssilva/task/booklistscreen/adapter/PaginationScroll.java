@@ -9,7 +9,7 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
-public class PaginationScrollingListener extends PaginationScrollListener {
+public class PaginationScroll extends PaginationScrollListener {
 
     private Subject<Integer> totalSubject = PublishSubject.<Integer>create().toSerialized();
 
@@ -17,7 +17,7 @@ public class PaginationScrollingListener extends PaginationScrollListener {
     private int totalItems = 0;
 
 
-    public PaginationScrollingListener(LinearLayoutManager layoutManager) {
+    public PaginationScroll(LinearLayoutManager layoutManager) {
         super(layoutManager);
     }
 

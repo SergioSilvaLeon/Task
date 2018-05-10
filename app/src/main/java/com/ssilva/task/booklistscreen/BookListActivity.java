@@ -13,8 +13,8 @@ import com.ssilva.task.R;
 import com.ssilva.task.TaskApp;
 import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
+import com.ssilva.task.booklistscreen.adapter.PaginationScroll;
 import com.ssilva.task.booklistscreen.dagger.BookListModule;
-import com.ssilva.task.booklistscreen.adapter.PaginationScrollingListener;
 import com.ssilva.task.data.models.BookList;
 
 import javax.inject.Inject;
@@ -39,7 +39,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Inject
     LinearLayoutManager linearLayoutManager;
     @Inject
-    PaginationScrollingListener scrollListener;
+    PaginationScroll scroller;
 
     private BooksAdapter mAdapter;
 
@@ -53,13 +53,13 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.addOnScrollListener(scrollListener);
+        mRecyclerView.addOnScrollListener(scroller);
 
         Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();
     }
 
     public void setUpIndexItem() {
-        Disposable subscription = scrollListener.getTotalListener()
+        Disposable subscription = scroller.getTotalListener()
                 .doOnNext(__ -> showProgressBar())
                 .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
 
@@ -112,7 +112,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Override
     public void onFetchSuccess(BookList listOfBooks) {
         mAdapter.updateDataSet(listOfBooks.getBooks());
-        scrollListener.setLoading(false);
+        scroller.setLoading(false);
 
         dismissProgressBar();
     }
