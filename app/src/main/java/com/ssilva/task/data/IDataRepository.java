@@ -7,7 +7,7 @@ import io.reactivex.Single;
 
 public interface IDataRepository {
 
-    public Single<BookList> getBooksFromApi();
+    public Single<BookList> getBooksFromApi(int startIndex);
 
     public Single<Book> getBookById(String id);
 

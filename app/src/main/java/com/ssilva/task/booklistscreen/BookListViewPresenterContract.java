@@ -12,11 +12,15 @@ public interface BookListViewPresenterContract {
 
         void onSuccess(BookList listOfBooks);
 
+        void onFetchSuccess(BookList listOfBooks);
+
     }
 
     interface Presenter extends BaseViewPresenterContract.Presenter {
 
         void loadListOfBooks ();
+
+        void loadMoreListOfBooks (int startIndex);
 
         void setView(BookListViewPresenterContract.View view);
 

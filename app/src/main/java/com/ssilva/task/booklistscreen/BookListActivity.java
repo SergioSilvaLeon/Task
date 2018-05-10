@@ -13,6 +13,7 @@ import com.ssilva.task.R;
 import com.ssilva.task.TaskApp;
 import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
+import com.ssilva.task.booklistscreen.adapter.PaginationScroll;
 import com.ssilva.task.booklistscreen.dagger.BookListModule;
 import com.ssilva.task.data.models.BookList;
 
@@ -35,8 +36,12 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Named("welcomeMessage")
     @Inject
     String welcomeMessage;
+    @Inject
+    LinearLayoutManager linearLayoutManager;
+    @Inject
+    PaginationScroll scroller;
+
     private BooksAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +51,19 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         ButterKnife.bind(this);
         goDagger();
 
-        mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.addOnScrollListener(scroller);
 
-        // Demonstrate welcomeMessage was injected correctly
         Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();
+    }
 
+    public void setUpIndexItem() {
+        Disposable subscription = scroller.getTotalListener()
+                .doOnNext(__ -> showProgressBar())
+                .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
+
+        presenter.subscribe(subscription);
     }
 
     @Override
@@ -66,7 +76,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     private void goDagger() {
         TaskApp.component
                 .provideBookListComponentBuilder()
-                .bookDetailComponentBuilder(new BookListModule("Hello world!"))
+                .bookDetailComponentBuilder(new BookListModule("Hello world!", this))
                 .build()
                 .inject(this);
     }
@@ -84,7 +94,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Override
     public void onError(Throwable throwable) {
         Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
-        // disable progress bar
+
         dismissProgressBar();
     }
 
@@ -93,10 +103,18 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         mAdapter = new BooksAdapter(listOfBooks.getBooks());
         mRecyclerView.setAdapter(mAdapter);
         setUpItemClicked();
+        setUpIndexItem();
 
-        // disable progress bar
         dismissProgressBar();
 
+    }
+
+    @Override
+    public void onFetchSuccess(BookList listOfBooks) {
+        mAdapter.updateDataSet(listOfBooks.getBooks());
+        scroller.setLoading(false);
+
+        dismissProgressBar();
     }
 
     private void setUpItemClicked() {

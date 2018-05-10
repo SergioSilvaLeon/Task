@@ -7,13 +7,15 @@ import io.reactivex.Single;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface BooksApi {
 
     String baseUrl = "/books/v1/volumes";
 
-    @GET(baseUrl + "?q=android&startIndex=0&maxResults=10")
-    Single<Response<BookList>> getListOfBooks();
+    // ?q=android&startIndex=0&maxResults=10"
+    @GET(baseUrl + "?q=android&maxResults=10")
+    Single<Response<BookList>> getListOfBooks(@Query("startIndex") int startIndex);
 
     @GET(baseUrl + "/{volumeId}")
     Single<Response<Book>> getBookById(@Path("volumeId") String id);
