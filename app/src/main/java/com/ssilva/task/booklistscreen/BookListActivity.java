@@ -14,7 +14,6 @@ import com.ssilva.task.TaskApp;
 import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
 import com.ssilva.task.booklistscreen.dagger.BookListModule;
-import com.ssilva.task.booklistscreen.adapter.PaginationCallback;
 import com.ssilva.task.booklistscreen.adapter.PaginationScrollingListener;
 import com.ssilva.task.data.models.BookList;
 
@@ -25,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 
-public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View, PaginationCallback {
+public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View {
 
     public static final String EXTRA_BOOK_ID = "EXTRA_BOOK_ID";
     @BindView(R.id.progress_bar)
@@ -52,7 +51,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        scrollListener = new PaginationScrollingListener(linearLayoutManager, this);
+        scrollListener = new PaginationScrollingListener(linearLayoutManager);
 
         mRecyclerView.addOnScrollListener(scrollListener);
 
@@ -60,10 +59,12 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
 
     }
 
-    @Override
-    public void loadNextItems(int startIndex) {
-        showProgressBar();
-        presenter.loadMoreListOfBooks(startIndex);
+    public void setUpIndexItem() {
+        Disposable subscription = scrollListener.getTotalListener()
+                .doOnNext(__ -> showProgressBar())
+                .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
+
+        presenter.subscribe(subscription);
     }
 
     @Override
@@ -103,6 +104,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         mAdapter = new BooksAdapter(listOfBooks.getBooks());
         mRecyclerView.setAdapter(mAdapter);
         setUpItemClicked();
+        setUpIndexItem();
 
         dismissProgressBar();
 

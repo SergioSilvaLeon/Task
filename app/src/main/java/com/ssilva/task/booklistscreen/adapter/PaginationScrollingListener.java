@@ -5,16 +5,20 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.ssilva.task.util.PaginationScrollListener;
 
-public class PaginationScrollingListener extends PaginationScrollListener{
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
+
+public class PaginationScrollingListener extends PaginationScrollListener {
+
+    private Subject<Integer> totalSubject = PublishSubject.<Integer>create().toSerialized();
 
     private boolean isLoading = false;
     private int totalItems = 0;
 
-    PaginationCallback callback;
 
-    public PaginationScrollingListener(LinearLayoutManager layoutManager, PaginationCallback callback) {
+    public PaginationScrollingListener(LinearLayoutManager layoutManager) {
         super(layoutManager);
-        this.callback = callback;
     }
 
     @Override
@@ -22,7 +26,7 @@ public class PaginationScrollingListener extends PaginationScrollListener{
         isLoading = true;
         totalItems += 10;
 
-        callback.loadNextItems(totalItems);
+        totalSubject.onNext(totalItems);
     }
 
     @Override
@@ -32,5 +36,9 @@ public class PaginationScrollingListener extends PaginationScrollListener{
 
     public void setLoading(boolean loading) {
         isLoading = loading;
+    }
+
+    public Observable<Integer> getTotalListener() {
+        return totalSubject;
     }
 }
