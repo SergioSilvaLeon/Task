@@ -14,8 +14,9 @@ import com.ssilva.task.TaskApp;
 import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
 import com.ssilva.task.booklistscreen.dagger.BookListModule;
+import com.ssilva.task.booklistscreen.adapter.PaginationCallback;
+import com.ssilva.task.booklistscreen.adapter.PaginationScrollingListener;
 import com.ssilva.task.data.models.BookList;
-import com.ssilva.task.util.PaginationScrollListener;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 
-public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View {
+public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View, PaginationCallback {
 
     public static final String EXTRA_BOOK_ID = "EXTRA_BOOK_ID";
     @BindView(R.id.progress_bar)
@@ -37,10 +38,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Inject
     String welcomeMessage;
     private BooksAdapter mAdapter;
-    private LinearLayoutManager linearLayoutManager;
-
-    private boolean isLoading = false;
-    private int totalItems = 0;
+    private PaginationScrollingListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,34 +48,22 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         ButterKnife.bind(this);
         goDagger();
 
-        mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager
-                (this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mRecyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                totalItems += 10;
+        scrollListener = new PaginationScrollingListener(linearLayoutManager, this);
 
-                loadNextItems();
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        });
+        mRecyclerView.addOnScrollListener(scrollListener);
 
         // Demonstrate welcomeMessage was injected correctly
         Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();
 
     }
 
-    private void loadNextItems() {
-        presenter.loadMoreListOfBooks(totalItems);
+    @Override
+    public void loadNextItems(int startIndex) {
+        presenter.loadMoreListOfBooks(startIndex);
     }
 
     @Override
@@ -125,7 +111,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Override
     public void onFetchSuccess(BookList listOfBooks) {
         mAdapter.updateDataSet(listOfBooks.getBooks());
-        isLoading = false;
+        scrollListener.setLoading(false);
 
         dismissProgressBar();
     }
