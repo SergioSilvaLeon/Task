@@ -15,6 +15,7 @@ import com.ssilva.task.bookdetailscreen.BookDetailActivity;
 import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
 import com.ssilva.task.booklistscreen.dagger.BookListModule;
 import com.ssilva.task.data.models.BookList;
+import com.ssilva.task.util.PaginationScrollListener;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,7 +37,10 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Inject
     String welcomeMessage;
     private BooksAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
+
+    private boolean isLoading = false;
+    private int totalItems = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,19 +52,39 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
 
         mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        linearLayoutManager = new LinearLayoutManager
+                (this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        mRecyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                totalItems += 10;
+
+                loadNextItems();
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
 
         // Demonstrate welcomeMessage was injected correctly
         Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();
 
     }
 
+    private void loadNextItems() {
+        presenter.loadMoreListOfBooks(totalItems);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         presenter.setView(this);
-        presenter.loadListOfBooks(0);
+        presenter.loadListOfBooks();
     }
 
     private void goDagger() {
@@ -96,6 +120,14 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
 
         dismissProgressBar();
 
+    }
+
+    @Override
+    public void onFetchSuccess(BookList listOfBooks) {
+        mAdapter.updateDataSet(listOfBooks.getBooks());
+        isLoading = false;
+
+        dismissProgressBar();
     }
 
     private void setUpItemClicked() {

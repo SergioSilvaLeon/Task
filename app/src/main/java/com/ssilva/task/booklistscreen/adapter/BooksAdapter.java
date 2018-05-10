@@ -20,7 +20,6 @@ import io.reactivex.subjects.Subject;
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewAdapter> {
 
-    // Not thread safe,
     private Subject<String> clickSubject = PublishSubject.<String>create().toSerialized();
 
     private List<Book> mBooks;
@@ -50,6 +49,14 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewAdap
 
     public Observable<String> getClickListener() {
         return clickSubject;
+    }
+
+    public void updateDataSet(List<Book> newBooks){
+        for (Book newBook: newBooks) {
+            mBooks.add(newBook);
+        }
+
+        notifyDataSetChanged();
     }
 
     public class BookViewAdapter extends RecyclerView.ViewHolder implements View.OnClickListener {
