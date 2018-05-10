@@ -56,7 +56,6 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
 
         mRecyclerView.addOnScrollListener(scrollListener);
 
-        // Demonstrate welcomeMessage was injected correctly
         Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show();
 
     }
