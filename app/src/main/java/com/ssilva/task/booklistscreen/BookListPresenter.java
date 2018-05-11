@@ -16,6 +16,7 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
 
     private IDataRepository dataRepository;
     private BookListViewPresenterContract.View view = null;
+    private String currentQuery;
 
     public BookListPresenter(IDataRepository dataRepository) {
         this.dataRepository = dataRepository;
@@ -26,7 +27,7 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
     public void loadListOfBooks() {
         view.showProgressBar();
 
-        Disposable disposable = dataRepository.getBooksFromApi(0)
+        Disposable disposable = dataRepository.getBooksFromApi(0, "Android")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -39,7 +40,7 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
 
     @Override
     public void loadMoreListOfBooks(int startIndex) {
-        Disposable disposable = dataRepository.getBooksFromApi(startIndex)
+        Disposable disposable = dataRepository.getBooksFromApi(startIndex, currentQuery)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -55,11 +56,14 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
         Disposable subscription = query.debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .filter(_query ->  !_query.isEmpty())
+                .map(__ -> currentQuery  = __)
                 .switchMap(search -> dataRepository.getBooksByQuery(search))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    result -> Log.i("query onNext", result.getBooks().toString()),
+                    result -> {
+                        view.onSuccessQuery(result);
+                    },
                     error -> Log.i("query onError", error.getMessage())
                 );
 

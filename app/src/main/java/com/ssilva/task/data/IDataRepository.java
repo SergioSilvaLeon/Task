@@ -10,7 +10,7 @@ public interface IDataRepository {
 
     public Observable<BookList> getBooksByQuery(String query);
 
-    public Single<BookList> getBooksFromApi(int startIndex);
+    public Single<BookList> getBooksFromApi(int startIndex, String query);
 
     public Single<Book> getBookById(String id);
 

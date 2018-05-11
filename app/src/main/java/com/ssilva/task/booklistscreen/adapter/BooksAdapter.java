@@ -67,6 +67,10 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewAdap
         notifyDataSetChanged();
     }
 
+    public void clear() {
+        mBooks.clear();
+    }
+
     public class BookViewAdapter extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView bookTitle;

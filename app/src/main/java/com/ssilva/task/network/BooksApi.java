@@ -19,8 +19,9 @@ public interface BooksApi {
     @GET(baseUrl + "?startIndex=0&maxResults=10")
     Observable<Response<BookList>> getListOfBooksByQuery(@Query("q") String query);
 
-    @GET(baseUrl + "?q=android&maxResults=10")
-    Single<Response<BookList>> getListOfBooks(@Query("startIndex") int startIndex);
+    @GET(baseUrl + "?maxResults=10")
+    Single<Response<BookList>> getListOfBooks(@Query("startIndex") int startIndex,
+                                              @Query("q") String query);
 
     @GET(baseUrl + "/{volumeId}")
     Single<Response<Book>> getBookById(@Path("volumeId") String id);

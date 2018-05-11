@@ -29,8 +29,8 @@ public class DataRepositoryImpl implements IDataRepository{
     }
 
     @Override
-    public Single<BookList> getBooksFromApi(int startIndex) {
-        return api.getListOfBooks(startIndex)
+    public Single<BookList> getBooksFromApi(int startIndex, String query) {
+        return api.getListOfBooks(startIndex, query)
                 .map(response -> response.body())
                 .doOnError(error -> {throw new RuntimeException(error.getMessage());});
     }

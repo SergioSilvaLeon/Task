@@ -16,6 +16,8 @@ public interface BookListViewPresenterContract {
 
         void onFetchSuccess(BookList listOfBooks);
 
+        void onSuccessQuery(BookList books);
+
     }
 
     interface Presenter extends BaseViewPresenterContract.Presenter {

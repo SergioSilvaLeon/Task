@@ -143,6 +143,15 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         dismissProgressBar();
     }
 
+    @Override
+    public void onSuccessQuery(BookList books) {
+        booksAdapter.clear();
+        booksAdapter.initDataSet(books.getBooks());
+
+        dismissProgressBar();
+    }
+
+
     private void setUpItemClicked() {
         Disposable subscription = booksAdapter.getClickListener()
                 .subscribe(id -> {
