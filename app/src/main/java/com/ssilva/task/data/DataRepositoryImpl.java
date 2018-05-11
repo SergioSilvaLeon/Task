@@ -6,7 +6,9 @@ import com.ssilva.task.network.BooksApi;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class DataRepositoryImpl implements IDataRepository{
@@ -16,6 +18,14 @@ public class DataRepositoryImpl implements IDataRepository{
     @Inject
     public DataRepositoryImpl(BooksApi api) {
         this.api = api;
+    }
+
+    @Override
+    public Observable<BookList> getBooksByQuery(String query) {
+        return api.getListOfBooksByQuery(query)
+                .subscribeOn(Schedulers.io())
+                .map(response -> response.body())
+                .doOnError(error -> {throw new RuntimeException(error.getMessage());});
     }
 
     @Override

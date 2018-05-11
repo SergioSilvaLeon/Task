@@ -84,11 +84,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     }
 
     private void setUpQuerySubject() {
-        Disposable subscription = rxSearch.getQuerySubject()
-                .debounce(300, TimeUnit.MILLISECONDS)
-                .subscribe(query -> Log.i("searchviewquery", query));
-
-        presenter.subscribe(subscription);
+        presenter.loadBooksByQuery(rxSearch.getQuerySubject());
     }
 
     public void setUpIndexItem() {
