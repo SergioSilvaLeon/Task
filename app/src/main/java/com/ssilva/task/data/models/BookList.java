@@ -2,19 +2,14 @@ package com.ssilva.task.data.models;
 
 
 import java.util.List;
+
+import com.google.auto.value.AutoValue;
 import com.google.gson.annotations.SerializedName;
 
-public class BookList {
+@AutoValue
+public abstract class BookList {
 
     @SerializedName("items")
-    private List<Book> books = null;
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> items) {
-        this.books = items;
-    }
+    public abstract List<Book> books();
 
 }

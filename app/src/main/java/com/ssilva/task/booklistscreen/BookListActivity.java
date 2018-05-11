@@ -130,7 +130,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
 
     @Override
     public void onFetchSuccess(BookList listOfBooks) {
-        booksAdapter.updateDataSet(listOfBooks.getBooks());
+        booksAdapter.updateDataSet(listOfBooks.books());
         scroller.setLoading(false);
 
         dismissProgressBar();
@@ -139,7 +139,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     @Override
     public void onSuccessQuery(BookList books) {
         booksAdapter.clear();
-        booksAdapter.initDataSet(books.getBooks());
+        booksAdapter.initDataSet(books.books());
 
         dismissProgressBar();
     }
