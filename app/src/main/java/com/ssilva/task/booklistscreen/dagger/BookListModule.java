@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.ssilva.task.booklistscreen.BookListPresenter;
 import com.ssilva.task.booklistscreen.BookListViewPresenterContract;
+import com.ssilva.task.booklistscreen.adapter.BooksAdapter;
 import com.ssilva.task.booklistscreen.adapter.PaginationScroll;
 import com.ssilva.task.booklistscreen.adapter.RxSearch;
 import com.ssilva.task.dagger.scopes.ActivityViewScope;
@@ -57,6 +58,12 @@ public class BookListModule {
     @Provides
     RxSearch provideRxSearch() {
         return new RxSearch();
+    }
+
+    @ActivityViewScope
+    @Provides
+    BooksAdapter provideBooksAdapter() {
+        return new BooksAdapter();
     }
 
 }
