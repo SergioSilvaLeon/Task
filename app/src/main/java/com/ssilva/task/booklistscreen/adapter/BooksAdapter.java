@@ -11,6 +11,7 @@ import com.master.glideimageview.GlideImageView;
 import com.ssilva.task.R;
 import com.ssilva.task.data.models.Book;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -24,8 +25,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewAdap
 
     private List<Book> mBooks;
 
-    public BooksAdapter(List<Book> books) {
-        mBooks = books;
+    public BooksAdapter() {
+        mBooks = new ArrayList<>();
     }
 
     @Override
@@ -57,6 +58,17 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewAdap
         }
 
         notifyDataSetChanged();
+    }
+
+    public void initDataSet(List<Book> books) {
+        mBooks.clear();
+
+        mBooks = books;
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        mBooks.clear();
     }
 
     public class BookViewAdapter extends RecyclerView.ViewHolder implements View.OnClickListener {

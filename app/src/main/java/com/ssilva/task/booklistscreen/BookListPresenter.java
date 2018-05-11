@@ -1,8 +1,13 @@
 package com.ssilva.task.booklistscreen;
 
+import android.util.Log;
+
 import com.ssilva.task.common.RxBasePresenter;
 import com.ssilva.task.data.IDataRepository;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -11,6 +16,7 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
 
     private IDataRepository dataRepository;
     private BookListViewPresenterContract.View view = null;
+    private String currentQuery;
 
     public BookListPresenter(IDataRepository dataRepository) {
         this.dataRepository = dataRepository;
@@ -18,23 +24,11 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
 
 
     @Override
-    public void loadListOfBooks() {
+    public void loadMoreListOfBooks(int startIndex) {
+
         view.showProgressBar();
 
-        Disposable disposable = dataRepository.getBooksFromApi(0)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        bookList -> view.onSuccess(bookList),
-                        error -> view.onError(error)
-                );
-
-        subscribe(disposable);
-    }
-
-    @Override
-    public void loadMoreListOfBooks(int startIndex) {
-        Disposable disposable = dataRepository.getBooksFromApi(startIndex)
+        Disposable disposable = dataRepository.getBooksFromApi(startIndex, currentQuery)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -43,6 +37,29 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
                 );
 
         subscribe(disposable);
+    }
+
+    @Override
+    public void loadBooksByQuery(Observable<String> query) {
+
+        view.showProgressBar();
+
+        Disposable subscription = query.debounce(300, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .filter(_query ->  !_query.isEmpty())
+                .map(__ -> currentQuery  = __)
+                .switchMap(search -> dataRepository.getBooksByQuery(search))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    result -> {
+                        view.onSuccessQuery(result);
+                    },
+                    error -> Log.i("query onError", error.getMessage())
+                );
+
+        subscribe(subscription);
+
     }
 
     @Override
