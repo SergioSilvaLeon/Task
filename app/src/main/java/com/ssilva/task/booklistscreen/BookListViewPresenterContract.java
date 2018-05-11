@@ -12,8 +12,6 @@ public interface BookListViewPresenterContract {
 
         void onError(Throwable throwable);
 
-        void onSuccess(BookList listOfBooks);
-
         void onFetchSuccess(BookList listOfBooks);
 
         void onSuccessQuery(BookList books);
@@ -21,8 +19,6 @@ public interface BookListViewPresenterContract {
     }
 
     interface Presenter extends BaseViewPresenterContract.Presenter {
-
-        void loadListOfBooks ();
 
         void loadMoreListOfBooks (int startIndex);
 

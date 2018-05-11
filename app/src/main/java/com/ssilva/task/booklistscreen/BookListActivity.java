@@ -88,7 +88,6 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
 
     public void setUpIndexItem() {
         Disposable subscription = scroller.getTotalListener()
-                .doOnNext(__ -> showProgressBar())
                 .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
 
         presenter.subscribe(subscription);
@@ -98,7 +97,9 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     protected void onResume() {
         super.onResume();
         presenter.setView(this);
-        presenter.loadListOfBooks();
+
+        setUpItemClicked();
+        setUpIndexItem();
     }
 
     private void goDagger() {
@@ -126,14 +127,6 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         dismissProgressBar();
     }
 
-    @Override
-    public void onSuccess(BookList listOfBooks) {
-        booksAdapter.initDataSet(listOfBooks.getBooks());
-        setUpItemClicked();
-        setUpIndexItem();
-
-        dismissProgressBar();
-    }
 
     @Override
     public void onFetchSuccess(BookList listOfBooks) {

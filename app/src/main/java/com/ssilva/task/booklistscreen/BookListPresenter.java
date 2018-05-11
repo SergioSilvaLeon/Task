@@ -24,22 +24,10 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
 
 
     @Override
-    public void loadListOfBooks() {
+    public void loadMoreListOfBooks(int startIndex) {
+
         view.showProgressBar();
 
-        Disposable disposable = dataRepository.getBooksFromApi(0, "Android")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        bookList -> view.onSuccess(bookList),
-                        error -> view.onError(error)
-                );
-
-        subscribe(disposable);
-    }
-
-    @Override
-    public void loadMoreListOfBooks(int startIndex) {
         Disposable disposable = dataRepository.getBooksFromApi(startIndex, currentQuery)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -53,6 +41,9 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
 
     @Override
     public void loadBooksByQuery(Observable<String> query) {
+
+        view.showProgressBar();
+
         Disposable subscription = query.debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .filter(_query ->  !_query.isEmpty())
