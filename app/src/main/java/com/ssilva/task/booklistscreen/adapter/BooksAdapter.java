@@ -88,10 +88,10 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewAdap
         }
 
         public void bindToView(Book book) {
-            bookTitle.setText(book.getVolumeInfo().getTitle());
-            bookProductionDate.setText(book.getVolumeInfo().getPublishedDate());
+            bookTitle.setText(book.volumeInfo().getTitle());
+            bookProductionDate.setText(book.volumeInfo().getPublishedDate());
             try {
-                bookThumbnail.loadImageUrl(book.getVolumeInfo().getImageLinks().getSmallThumbnail());
+                bookThumbnail.loadImageUrl(book.volumeInfo().getImageLinks().getSmallThumbnail());
             } catch (Exception e) {
                 // TODO: Handle Exception
             }
@@ -99,7 +99,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewAdap
 
         @Override
         public void onClick(View v) {
-            clickSubject.onNext(mBooks.get(getAdapterPosition()).getId());
+            clickSubject.onNext(mBooks.get(getAdapterPosition()).id());
         }
     }
 }

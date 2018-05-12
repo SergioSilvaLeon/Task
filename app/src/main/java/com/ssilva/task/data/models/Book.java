@@ -1,29 +1,21 @@
 
 package com.ssilva.task.data.models;
 
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-public class Book {
+@AutoValue
+public abstract class Book {
 
     @SerializedName("volumeInfo")
-    private VolumeInfo volumeInfo;
+    public abstract VolumeInfo volumeInfo();
     @SerializedName("id")
-    private String id;
+    public abstract String id();
 
-
-    public VolumeInfo getVolumeInfo() {
-        return volumeInfo;
+    public static TypeAdapter<Book> typeAdapter(Gson gson) {
+        return new AutoValue_Book.GsonTypeAdapter(gson);
     }
 
-    public void setVolumeInfo(VolumeInfo volumeInfo) {
-        this.volumeInfo = volumeInfo;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }
