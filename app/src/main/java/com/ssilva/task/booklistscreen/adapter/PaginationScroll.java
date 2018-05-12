@@ -38,7 +38,7 @@ public class PaginationScroll extends PaginationScrollListener {
         isLoading = loading;
     }
 
-    public Observable<Integer> getTotalListener() {
+    public Observable<Integer> getScrollSubject() {
         return totalSubject;
     }
 }
