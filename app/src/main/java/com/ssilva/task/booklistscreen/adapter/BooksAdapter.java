@@ -88,10 +88,10 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewAdap
         }
 
         public void bindToView(Book book) {
-            bookTitle.setText(book.volumeInfo().getTitle());
-            bookProductionDate.setText(book.volumeInfo().getPublishedDate());
+            bookTitle.setText(book.volumeInfo().title());
+            bookProductionDate.setText(book.volumeInfo().publishedDate());
             try {
-                bookThumbnail.loadImageUrl(book.volumeInfo().getImageLinks().getSmallThumbnail());
+                bookThumbnail.loadImageUrl(book.volumeInfo().imageLinks().smallThumbnail());
             } catch (Exception e) {
                 // TODO: Handle Exception
             }

@@ -2,63 +2,35 @@
 package com.ssilva.task.data.models;
 
 import java.util.List;
-import com.google.gson.annotations.Expose;
+
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-public class VolumeInfo {
+import io.reactivex.annotations.Nullable;
 
+@AutoValue
+public abstract class VolumeInfo {
+
+    @Nullable
     @SerializedName("title")
-    private String title;
+    public abstract String title();
+    @Nullable
     @SerializedName("authors")
-    private List<String> authors = null;
+    public abstract List<String> authors();
+    @Nullable
     @SerializedName("publishedDate")
-    private String publishedDate;
+    public abstract String publishedDate();
+    @Nullable
     @SerializedName("description")
-    private String description;
+    public abstract String description();
+    @Nullable
     @SerializedName("imageLinks")
-    private ImageLinks imageLinks;
+    public abstract ImageLinks imageLinks();
 
-
-    public String getTitle() {
-        return title;
+    public static TypeAdapter<VolumeInfo> typeAdapter(Gson gson) {
+        return new AutoValue_VolumeInfo.GsonTypeAdapter(gson);
     }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public List<String> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(List<String> authors) {
-        this.authors = authors;
-    }
-
-    public String getPublishedDate() {
-        return publishedDate;
-    }
-
-    public void setPublishedDate(String publishedDate) {
-        this.publishedDate = publishedDate;
-    }
-
-    public ImageLinks getImageLinks() {
-        return imageLinks;
-    }
-
-    public void setImageLinks(ImageLinks imageLinks) {
-        this.imageLinks = imageLinks;
-    }
-
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
 
 }

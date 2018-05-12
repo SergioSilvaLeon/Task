@@ -1,6 +1,5 @@
 package com.ssilva.task.data.models;
 
-
 import java.util.List;
 
 import com.google.auto.value.AutoValue;
