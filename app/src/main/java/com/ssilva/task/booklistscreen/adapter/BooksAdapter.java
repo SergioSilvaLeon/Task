@@ -48,7 +48,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewAdap
         return mBooks.size();
     }
 
-    public Observable<String> getClickListener() {
+    public Observable<String> getItemClickSubject() {
         return clickSubject;
     }
 

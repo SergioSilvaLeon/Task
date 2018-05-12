@@ -77,20 +77,9 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(rxSearch);
 
-        setUpQuerySubject();
+        setQuerySubject();
 
         return true;
-    }
-
-    private void setUpQuerySubject() {
-        presenter.loadBooksByQuery(rxSearch.getQuerySubject());
-    }
-
-    public void setUpIndexItem() {
-        Disposable subscription = scroller.getTotalListener()
-                .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
-
-        presenter.subscribe(subscription);
     }
 
     @Override
@@ -98,8 +87,8 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         super.onResume();
         presenter.setView(this);
 
-        setUpItemClicked();
-        setUpIndexItem();
+        setItemClickedSubject();
+        setScrollSubject();
     }
 
     private void goDagger() {
@@ -127,7 +116,6 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         dismissProgressBar();
     }
 
-
     @Override
     public void onFetchSuccess(BookList listOfBooks) {
         booksAdapter.updateDataSet(listOfBooks.books());
@@ -145,8 +133,8 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     }
 
 
-    private void setUpItemClicked() {
-        Disposable subscription = booksAdapter.getClickListener()
+    private void setItemClickedSubject() {
+        Disposable subscription = booksAdapter.getItemClickSubject()
                 .subscribe(id -> {
                     Intent intent = new Intent(BookListActivity.this, BookDetailActivity.class);
                     intent.putExtra(BookListActivity.EXTRA_BOOK_ID, id);
@@ -154,6 +142,17 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
                 });
 
         presenter.subscribe(subscription);
+    }
+
+    public void setScrollSubject() {
+        Disposable subscription = scroller.getScrollSubject()
+                .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
+
+        presenter.subscribe(subscription);
+    }
+
+    private void setQuerySubject() {
+        presenter.loadBooksByQuery(rxSearch.getQuerySubject());
     }
 
     @Override
