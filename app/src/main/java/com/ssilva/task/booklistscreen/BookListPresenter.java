@@ -1,7 +1,5 @@
 package com.ssilva.task.booklistscreen;
 
-import android.util.Log;
-
 import com.ssilva.task.common.RxBasePresenter;
 import com.ssilva.task.data.IDataRepository;
 
@@ -43,6 +41,8 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
     public void loadBooksByQuery(Observable<String> query) {
 
         view.showProgressBar();
+
+        // TODO: Learn what each mean
 
         Disposable subscription = query.debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
