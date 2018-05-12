@@ -1,20 +1,20 @@
 package com.ssilva.task.data.models;
 
-
 import java.util.List;
+
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-public class BookList {
+@AutoValue
+public abstract class BookList {
 
     @SerializedName("items")
-    private List<Book> books = null;
+    public abstract List<Book> books();
 
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> items) {
-        this.books = items;
+    public static TypeAdapter<BookList> typeAdapter(Gson gson) {
+        return new AutoValue_BookList.GsonTypeAdapter(gson);
     }
 
 }

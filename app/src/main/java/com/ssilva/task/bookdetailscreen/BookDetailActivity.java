@@ -59,10 +59,10 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailV
 
     @Override
     public void onSuccess(Book book) {
-        bookCover.loadImageUrl(book.getVolumeInfo().getImageLinks().getLarge());
-        tvPublishedDate.setText(book.getVolumeInfo().getPublishedDate());
-        tvAuthors.setText(book.getVolumeInfo().getAuthors().toString());
-        tvDescription.setText(book.getVolumeInfo().getDescription());
+        bookCover.loadImageUrl(book.volumeInfo().imageLinks().large());
+        tvPublishedDate.setText(book.volumeInfo().publishedDate());
+        tvAuthors.setText(book.volumeInfo().authors().toString());
+        tvDescription.setText(book.volumeInfo().description());
     }
 
     @Override

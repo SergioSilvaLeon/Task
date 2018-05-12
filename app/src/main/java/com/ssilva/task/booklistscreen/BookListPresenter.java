@@ -55,7 +55,7 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
                     result -> {
                         view.onSuccessQuery(result);
                     },
-                    error -> Log.i("query onError", error.getMessage())
+                        Throwable::printStackTrace
                 );
 
         subscribe(subscription);

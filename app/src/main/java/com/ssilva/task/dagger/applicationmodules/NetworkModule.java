@@ -1,6 +1,8 @@
 package com.ssilva.task.dagger.applicationmodules;
 
+import com.google.gson.GsonBuilder;
 import com.ssilva.task.BuildConfig;
+import com.ssilva.task.data.models.AutoValueGsonFactory;
 import com.ssilva.task.network.BooksApi;
 
 import javax.inject.Singleton;
@@ -25,7 +27,9 @@ public class NetworkModule {
     @Provides
     @Singleton
     Converter.Factory provideGsonConverter () {
-        return GsonConverterFactory.create();
+        return GsonConverterFactory.create(
+                new GsonBuilder().registerTypeAdapterFactory(AutoValueGsonFactory.create())
+                        .create());
     }
 
     @Singleton
@@ -37,11 +41,11 @@ public class NetworkModule {
 
     @Singleton
     @Provides
-    Retrofit provideRetrofit(String NAME_BASE_URL, Converter.Factory factory,
+    Retrofit provideRetrofit(String NAME_BASE_URL, Converter.Factory converterFactory,
                              OkHttpClient.Builder okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(NAME_BASE_URL)
-                .addConverterFactory(factory)
+                .addConverterFactory(converterFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient.build())
                 .build();

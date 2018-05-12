@@ -1,29 +1,25 @@
 
 package com.ssilva.task.data.models;
 
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-public class ImageLinks {
+import io.reactivex.annotations.Nullable;
 
+@AutoValue
+public abstract class ImageLinks {
+
+    @Nullable
     @SerializedName("smallThumbnail")
-    private String smallThumbnail;
+    public abstract String smallThumbnail();
+    @Nullable
     @SerializedName("large")
-    private String large;
+    public abstract String large();
 
-    public String getSmallThumbnail() {
-        return smallThumbnail;
-    }
-
-    public void setSmallThumbnail(String smallThumbnail) {
-        this.smallThumbnail = smallThumbnail;
-    }
-
-    public String getLarge() {
-        return large;
-    }
-
-    public void setLarge(String large) {
-        this.large = large;
+    public static TypeAdapter<ImageLinks> typeAdapter(Gson gson) {
+     return new AutoValue_ImageLinks.GsonTypeAdapter(gson);
     }
 
 }
