@@ -82,17 +82,6 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         return true;
     }
 
-    private void setQuerySubject() {
-        presenter.loadBooksByQuery(rxSearch.getQuerySubject());
-    }
-
-    public void setScrollSubject() {
-        Disposable subscription = scroller.getScrollSubject()
-                .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
-
-        presenter.subscribe(subscription);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -127,7 +116,6 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         dismissProgressBar();
     }
 
-
     @Override
     public void onFetchSuccess(BookList listOfBooks) {
         booksAdapter.updateDataSet(listOfBooks.books());
@@ -154,6 +142,17 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
                 });
 
         presenter.subscribe(subscription);
+    }
+
+    public void setScrollSubject() {
+        Disposable subscription = scroller.getScrollSubject()
+                .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
+
+        presenter.subscribe(subscription);
+    }
+
+    private void setQuerySubject() {
+        presenter.loadBooksByQuery(rxSearch.getQuerySubject());
     }
 
     @Override
