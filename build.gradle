@@ -23,6 +23,8 @@ allprojects {
     project.ext {
 
         // App Dependencies
+        autoValueGsonVersion = '0.7.0'
+        autoValueVersion = '1.5.2'
         daggerLibrariesVersion = '2.14.1'
         glideVersion = '1.0'
         gsonVersion = '2.8.2'
