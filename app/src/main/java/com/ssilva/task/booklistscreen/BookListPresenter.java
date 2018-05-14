@@ -40,14 +40,10 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
     @Override
     public void loadBooksByQuery(Observable<String> query) {
 
-        view.showProgressBar();
-
-        // TODO: Learn what each mean
-
         Disposable subscription = query.debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .filter(_query ->  !_query.isEmpty())
-                .map(__ -> currentQuery  = __)
+                .doOnNext(q -> currentQuery  = q)
                 .switchMap(search -> dataRepository.getBooksByQuery(search))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
