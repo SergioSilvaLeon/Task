@@ -8,10 +8,10 @@ import io.reactivex.Single;
 
 public interface IDataRepository {
 
-    public Observable<BookList> getBooksByQuery(String query);
+    Observable<BookList> getBooksByQuery(String query);
 
-    public Single<BookList> getBooksFromApi(int startIndex, String query);
+    Single<BookList> getBooksFromApi(int startIndex, String query);
 
-    public Single<Book> getBookById(String id);
+    Single<Book> getBookById(String id);
 
 }

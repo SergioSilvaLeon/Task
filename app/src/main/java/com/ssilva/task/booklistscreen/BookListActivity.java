@@ -26,6 +26,7 @@ import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View {
@@ -144,6 +145,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         presenter.subscribe(subscription);
     }
 
+    // TODO: Delegate Responsibility to Presenter
     public void setScrollSubject() {
         Disposable subscription = scroller.getScrollSubject()
                 .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
@@ -151,8 +153,16 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         presenter.subscribe(subscription);
     }
 
+    public Observable<Integer> getScrollObservable() {
+        return scroller.getScrollSubject();
+    }
+
     private void setQuerySubject() {
-        presenter.loadBooksByQuery(rxSearch.getQuerySubject());
+        presenter.loadBooksByQuery();
+    }
+
+    public Observable<String> getQueryObservable() {
+        return rxSearch.getQueryObservable();
     }
 
     @Override

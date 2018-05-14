@@ -5,7 +5,6 @@ import com.ssilva.task.data.IDataRepository;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -14,7 +13,6 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
 
     private IDataRepository dataRepository;
     private BookListViewPresenterContract.View view = null;
-    private String currentQuery;
 
     public BookListPresenter(IDataRepository dataRepository) {
         this.dataRepository = dataRepository;
@@ -26,7 +24,11 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
 
         view.showProgressBar();
 
-        Disposable disposable = dataRepository.getBooksFromApi(startIndex, currentQuery)
+
+        Disposable disposable = view.getScrollObservable()
+                .flatMap(index -> view.getQueryObservable()
+                        .flatMapSingle(query -> dataRepository.getBooksFromApi(startIndex, query))
+                )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -38,19 +40,19 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
     }
 
     @Override
-    public void loadBooksByQuery(Observable<String> query) {
+    public void loadBooksByQuery() {
 
-        Disposable subscription = query.debounce(300, TimeUnit.MILLISECONDS)
+        Disposable subscription = view.getQueryObservable()
+                .debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
-                .filter(_query ->  !_query.isEmpty())
-                .doOnNext(q -> currentQuery  = q)
+                .filter(que -> !que.isEmpty())
                 .switchMap(search -> dataRepository.getBooksByQuery(search))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    result -> {
-                        view.onSuccessQuery(result);
-                    },
+                        result -> {
+                            view.onSuccessQuery(result);
+                        },
                         Throwable::printStackTrace
                 );
 
