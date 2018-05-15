@@ -27,7 +27,6 @@ import javax.inject.Named;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 
 public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View {
 
@@ -126,6 +125,13 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     }
 
     @Override
+    public void onItemSelected(String id) {
+        Intent intent = new Intent(BookListActivity.this, BookDetailActivity.class);
+        intent.putExtra(BookListActivity.EXTRA_BOOK_ID, id);
+        startActivity(intent);
+    }
+
+    @Override
     public void onSuccessQuery(BookList books) {
         booksAdapter.clear();
         booksAdapter.initDataSet(books.books());
@@ -134,14 +140,12 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     }
 
     private void setItemClickedSubject() {
-        Disposable subscription = booksAdapter.getItemClickSubject()
-                .subscribe(id -> {
-                    Intent intent = new Intent(BookListActivity.this, BookDetailActivity.class);
-                    intent.putExtra(BookListActivity.EXTRA_BOOK_ID, id);
-                    startActivity(intent);
-                });
+        presenter.loadItemSelected();
+    }
 
-        presenter.subscribe(subscription);
+    @Override
+    public Observable<String> getItemIdObservable() {
+        return booksAdapter.getItemClickSubject();
     }
 
     public void setScrollSubject() {

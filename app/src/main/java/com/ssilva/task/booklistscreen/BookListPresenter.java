@@ -60,6 +60,14 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
     }
 
     @Override
+    public void loadItemSelected() {
+        Disposable subscription = view.getItemIdObservable()
+                .subscribe(id -> view.onItemSelected(id));
+
+        subscribe(subscription);
+    }
+
+    @Override
     public void setView(BookListViewPresenterContract.View view) {
         this.view = view;
     }
