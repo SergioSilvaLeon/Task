@@ -11,12 +11,12 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class DataRepositoryImpl implements IDataRepository{
+public class DataRepository implements IDataRepository{
 
     private BooksApi api;
 
     @Inject
-    public DataRepositoryImpl(BooksApi api) {
+    public DataRepository(BooksApi api) {
         this.api = api;
     }
 

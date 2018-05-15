@@ -1,6 +1,6 @@
 package com.ssilva.task.dagger.applicationmodules;
 
-import com.ssilva.task.data.DataRepositoryImpl;
+import com.ssilva.task.data.DataRepository;
 import com.ssilva.task.data.IDataRepository;
 
 import javax.inject.Singleton;
@@ -13,5 +13,5 @@ public abstract class DataModule {
 
     @Binds
     @Singleton
-    abstract IDataRepository provideDataRepository(DataRepositoryImpl dataRepository);
+    abstract IDataRepository provideDataRepository(DataRepository dataRepository);
 }
