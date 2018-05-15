@@ -24,7 +24,7 @@ public interface BookListViewPresenterContract {
 
     interface Presenter extends BaseViewPresenterContract.Presenter {
 
-        void loadMoreListOfBooks(int startIndex);
+        void loadMoreListOfBooks();
 
         void loadBooksByQuery();
 

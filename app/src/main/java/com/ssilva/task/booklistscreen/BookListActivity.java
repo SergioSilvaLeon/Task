@@ -133,7 +133,6 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         dismissProgressBar();
     }
 
-
     private void setItemClickedSubject() {
         Disposable subscription = booksAdapter.getItemClickSubject()
                 .subscribe(id -> {
@@ -145,14 +144,11 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         presenter.subscribe(subscription);
     }
 
-    // TODO: Delegate Responsibility to Presenter
     public void setScrollSubject() {
-        Disposable subscription = scroller.getScrollSubject()
-                .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
-
-        presenter.subscribe(subscription);
+        presenter.loadMoreListOfBooks();
     }
 
+    @Override
     public Observable<Integer> getScrollObservable() {
         return scroller.getScrollSubject();
     }
@@ -161,6 +157,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         presenter.loadBooksByQuery();
     }
 
+    @Override
     public Observable<String> getQueryObservable() {
         return rxSearch.getQueryObservable();
     }
