@@ -46,7 +46,7 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .filter(que -> !que.isEmpty())
-                .switchMap(search -> dataRepository.getBooksByQuery(search))
+                .flatMapSingle(search -> dataRepository.getBooksFromApi(0, search))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
