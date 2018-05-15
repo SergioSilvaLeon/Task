@@ -14,19 +14,25 @@ public interface BookListViewPresenterContract {
 
         void onFetchSuccess(BookList listOfBooks);
 
+        void onItemSelected(String id);
+
         void onSuccessQuery(BookList books);
 
         Observable<String> getQueryObservable();
 
         Observable<Integer> getScrollObservable();
 
+        Observable<String> getItemIdObservable();
+
     }
 
     interface Presenter extends BaseViewPresenterContract.Presenter {
 
-        void loadMoreListOfBooks(int startIndex);
+        void loadMoreListOfBooks();
 
         void loadBooksByQuery();
+
+        void loadItemSelected();
 
         void setView(BookListViewPresenterContract.View view);
 

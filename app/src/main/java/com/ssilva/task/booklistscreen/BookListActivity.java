@@ -27,7 +27,6 @@ import javax.inject.Named;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 
 public class BookListActivity extends AppCompatActivity implements BookListViewPresenterContract.View {
 
@@ -126,6 +125,13 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
     }
 
     @Override
+    public void onItemSelected(String id) {
+        Intent intent = new Intent(BookListActivity.this, BookDetailActivity.class);
+        intent.putExtra(BookListActivity.EXTRA_BOOK_ID, id);
+        startActivity(intent);
+    }
+
+    @Override
     public void onSuccessQuery(BookList books) {
         booksAdapter.clear();
         booksAdapter.initDataSet(books.books());
@@ -133,26 +139,20 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         dismissProgressBar();
     }
 
-
     private void setItemClickedSubject() {
-        Disposable subscription = booksAdapter.getItemClickSubject()
-                .subscribe(id -> {
-                    Intent intent = new Intent(BookListActivity.this, BookDetailActivity.class);
-                    intent.putExtra(BookListActivity.EXTRA_BOOK_ID, id);
-                    startActivity(intent);
-                });
-
-        presenter.subscribe(subscription);
+        presenter.loadItemSelected();
     }
 
-    // TODO: Delegate Responsibility to Presenter
+    @Override
+    public Observable<String> getItemIdObservable() {
+        return booksAdapter.getItemClickSubject();
+    }
+
     public void setScrollSubject() {
-        Disposable subscription = scroller.getScrollSubject()
-                .subscribe(startIndex -> presenter.loadMoreListOfBooks(startIndex));
-
-        presenter.subscribe(subscription);
+        presenter.loadMoreListOfBooks();
     }
 
+    @Override
     public Observable<Integer> getScrollObservable() {
         return scroller.getScrollSubject();
     }
@@ -161,6 +161,7 @@ public class BookListActivity extends AppCompatActivity implements BookListViewP
         presenter.loadBooksByQuery();
     }
 
+    @Override
     public Observable<String> getQueryObservable() {
         return rxSearch.getQueryObservable();
     }

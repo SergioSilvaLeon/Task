@@ -20,20 +20,20 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
 
 
     @Override
-    public void loadMoreListOfBooks(int startIndex) {
-
-        view.showProgressBar();
-
+    public void loadMoreListOfBooks() {
 
         Disposable disposable = view.getScrollObservable()
                 .flatMap(index -> view.getQueryObservable()
-                        .flatMapSingle(query -> dataRepository.getBooksFromApi(startIndex, query))
+                        .flatMapSingle(query -> dataRepository.getBooksFromApi(index, query))
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         bookList -> view.onFetchSuccess(bookList),
-                        error -> view.onError(error)
+                        error -> {
+                            error.printStackTrace();
+                            view.onError(error);
+                        }
                 );
 
         subscribe(disposable);
@@ -46,18 +46,25 @@ public class BookListPresenter extends RxBasePresenter implements BookListViewPr
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .filter(que -> !que.isEmpty())
-                .switchMap(search -> dataRepository.getBooksByQuery(search))
+                .flatMapSingle(search -> dataRepository.getBooksFromApi(0, search))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        result -> {
-                            view.onSuccessQuery(result);
-                        },
-                        Throwable::printStackTrace
+                        result ->
+                            view.onSuccessQuery(result),
+                            Throwable::printStackTrace
                 );
 
         subscribe(subscription);
 
+    }
+
+    @Override
+    public void loadItemSelected() {
+        Disposable subscription = view.getItemIdObservable()
+                .subscribe(id -> view.onItemSelected(id));
+
+        subscribe(subscription);
     }
 
     @Override
